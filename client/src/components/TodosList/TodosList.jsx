@@ -5,22 +5,27 @@ import { useStyles } from "./TodosList.styles";
 import { getTodos } from "../../api/getTodos";
 import AddTodoModal from "../TodoModal/TodoModal";
 import { useDispatch, useSelector } from "react-redux";
+import SortButtons from "../SortButtons/SortButtons";
 
 export default function TodosList() {
-
   const { classes } = useStyles();
-
+  const initialSortState = [
+    { value: "byName", type: "" },
+    { value: "byDone", type: "" },
+    { value: "byEmail", type: "" },
+  ]
   const [showModal, setShowModal] = useState(false);
-  const [page, setPage] = useState(1);
+  const [sortButtonsState, setSortButtonsState] = useState(initialSortState);
 
+  const [page, setPage] = useState(1);
   const todos = useSelector((state) => state.todosReducer);
   const totalPages = useSelector((state) => state.metaReducer.totalPages);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    dispatch(getTodos(page-1));
-  }, [dispatch, page]);
-  
+    dispatch(getTodos(page - 1, sortButtonsState.find(state => state.type)));
+  }, [dispatch, page, sortButtonsState]);
+
   return (
     <>
       <Container>
@@ -30,25 +35,11 @@ export default function TodosList() {
         >
           Add Todo
         </Button>
-        <div className={classes.sortButtonsContainer}>
-          <Typography>Сортировать:</Typography>
-        <Button
-          // className={classes.addTodoBtn}
-          // onClick={() => setShowModal(true)}
-        >
-          По имени
-        </Button>
-        <Button
-          // className={classes.addTodoBtn}
-        >
-          По email
-        </Button>
-        <Button
-          // className={classes.addTodoBtn}
-        >
-          По статусу
-        </Button>
-        </div>
+        <SortButtons
+          sortButtonsState={sortButtonsState}
+          setSortButtonsState={setSortButtonsState}
+          initialSortState={initialSortState}
+        />
         <Container>
           {todos.length
             ? todos.map((todosItem) => (

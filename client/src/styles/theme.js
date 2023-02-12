@@ -89,6 +89,15 @@ const theme = createTheme({
               backgroundColor: "red",
             },
         },
+        contained: {
+          color: "black",
+          backgroundColor: "white",
+          outline: "none",
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+        },
         text: {
           fontWeight: 400,
           lineHeight: "24px",

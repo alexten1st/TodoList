@@ -64,10 +64,10 @@ export default function Todo({ todo }) {
           </Typography>
         )}
       </CardContent>
-      {auth && (
+      {(auth && !editMode) && (
         <CardActions className={classes.buttonContainer}>
           <Button size="small" onClick={doneHandler}>
-            Done
+            {todo.done ? "Undone": "Done"}
           </Button>
           <Button size="small" onClick={() => setEditMode(true)}>
             Edit
